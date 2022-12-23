@@ -1,3 +1,7 @@
 # goexperence
-初学的
-chuxue 
+
+--dfa
+
+--string
+
+--bit
