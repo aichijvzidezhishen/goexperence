@@ -1,0 +1,16 @@
+{
+    "files.autoSave": "onFocusChange",
+    "go.gopath": "E:\\workplace\\Go",
+    "go.goroot": "C:\\Go",
+    // "go.buildOnSave": "off",
+    "go.autocompleteUnimportedPackages": true,
+    "go.gocodePackageLookupMode": "go",
+    "go.gotoSymbol.includeImports": true,
+    "go.useCodeSnippetsOnFunctionSuggest": true,
+    "go.inferGopath": false,
+    "go.formatTool": "goreturns",
+    "go.useCodeSnippetsOnFunctionSuggestWithoutType": true,
+    "gopls": {
+        "experimentalWorkspaceModule": true,
+    }
+}
