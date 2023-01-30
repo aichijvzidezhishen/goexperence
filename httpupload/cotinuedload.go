@@ -74,14 +74,13 @@ type filePart struct {
 	Data  []byte //http下载得到的文件内容
 }
 
-func main() {
+func HttpContinueDownload() {
 	startTime := time.Now()
-	var url string //下载文件的地址
-	url = "https://download.jetbrains.com/go/goland-2020.2.2.dmg"
-	downloader := NewFileDownloader(url, "", "", 10)
+	var url = "https://p8.itc.cn/images01/20230117/593dfaa3b76a444f9df538299d2ac10f.jpeg" // 下载文件的地址
+	downloader := NewFileDownloader(url, "", "./", 10)
 	if err := downloader.Run(); err != nil {
 		// fmt.Printf("\n%s", err)
-		log.Fatal(err)
+		log.Fatal("==", err)
 	}
 	fmt.Printf("\n 文件下载完成耗时: %f second\n", time.Now().Sub(startTime).Seconds())
 }
@@ -103,9 +102,12 @@ func (d *FileDownloader) head() (int, error) {
 	//https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Ranges
 	if resp.Header.Get("Accept-Ranges") != "bytes" {
 		return 0, errors.New("服务器不支持文件断点续传")
+	} else {
+		fmt.Println("服务器支持文件断点续传")
 	}
 
 	d.outputFileName = parseFileInfoFrom(resp)
+	log.Println("-----", d.outputFileName)
 	//https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Length
 	return strconv.Atoi(resp.Header.Get("Content-Length"))
 }
@@ -114,6 +116,7 @@ func (d *FileDownloader) head() (int, error) {
 func (d *FileDownloader) Run() error {
 	fileTotalSize, err := d.head()
 	if err != nil {
+		log.Fatal("head fileTotalSize err ", err)
 		return err
 	}
 	d.fileSize = fileTotalSize
@@ -193,16 +196,20 @@ func (d FileDownloader) getNewRequest(method string) (*http.Request, error) {
 	if err != nil {
 		return nil, err
 	}
-	r.Header.Set("User-Agent", "mojocn")
+	// r.Header.Set("User-Agent", "mojocn")
 	return r, nil
 }
 
 // mergeFileParts 合并下载的文件
 func (d FileDownloader) mergeFileParts() error {
 	log.Println("开始合并文件")
+	log.Println("outputDir", d.outputDir)
+
 	path := filepath.Join(d.outputDir, d.outputFileName)
+	log.Println("文件路径", path)
 	mergedFile, err := os.Create(path)
 	if err != nil {
+
 		return err
 	}
 	defer mergedFile.Close()
@@ -217,6 +224,8 @@ func (d FileDownloader) mergeFileParts() error {
 	if totalSize != d.fileSize {
 		return errors.New("文件不完整")
 	}
+
+	hex.EncodeToString(hash.Sum(nil))
 	//https://download.jetbrains.com/go/goland-2020.2.2.dmg.sha256?_ga=2.223142619.1968990594.1597453229-1195436307.1493100134
 	if hex.EncodeToString(hash.Sum(nil)) != "3af4660ef22f805008e6773ac25f9edbc17c2014af18019b7374afbed63d4744" {
 		return errors.New("文件损坏")
