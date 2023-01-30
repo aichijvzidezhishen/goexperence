@@ -7,10 +7,7 @@
 --string
 ## 算法与数据结构
 ### 
-
-I think
-
-i think i will use it to 
+代理
 
 ## base
 1. 无缓冲 Chan 的发送和接收是否同步
