@@ -27,7 +27,7 @@ func main() {
 	te1 := []*Test1{}
 	te1 = append(te1)
 	GetTe1(te1)
-	Test()
+	// Test()
 	// fmt.Println("te1", GetTe1(te1))
 	// fmt.Println("ss")
 	// var a Slice[int] = []int{1, 2, 3}

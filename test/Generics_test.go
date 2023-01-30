@@ -11,8 +11,8 @@ import (
 
 func TestXxx(t *testing.T) {
 	client := redis.NewClient(&redis.Options{
-		Addr:     "192.168.10.10:6379",
-		Password: "123456",
+		Addr:     "127.0.0.1:6379",
+		Password: "",
 		DB:       0,
 	})
 

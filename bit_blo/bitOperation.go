@@ -13,18 +13,18 @@ func SetBitValue(position int32) {
 	fmt.Println("a", A)
 }
 
-//十进制转换成二进制
+// 十进制转换成二进制
 func DectoBin(d int64) {
 	bin := strconv.FormatInt(d, 2)
 	fmt.Println("bin", bin)
 }
 
-//判断二进制的某一位是否是1
+// 判断二进制的某一位是否是1
 func IsOne(x int, n int) bool {
 	return (x>>(n-1))&1 == 1
 }
 
-//获取二进制中1的个数
+// 获取二进制中1的个数
 func BitCount1(n int) int {
 	num := n
 
@@ -34,4 +34,11 @@ func BitCount1(n int) int {
 		count++
 	}
 	return count
+}
+
+// 识别
+func parse(da uint32) {
+	if da >= 1 {
+		da = 20
+	}
 }
