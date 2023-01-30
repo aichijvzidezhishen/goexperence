@@ -35,3 +35,10 @@ func BitCount1(n int) int {
 	}
 	return count
 }
+
+// 识别
+func parse(da uint32) {
+	if da >= 1 {
+		da = 20
+	}
+}

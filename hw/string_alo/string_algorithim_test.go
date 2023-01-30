@@ -11,7 +11,6 @@ func TestPointMove(t *testing.T) {
 	// Slice = append(Slice, a, b)
 	assert.Equal(t, x, 10, "Point move error")
 	assert.Equal(t, y, 10, "Point move error")
-
 }
 
 func TestIdentifyIp(t *testing.T) {

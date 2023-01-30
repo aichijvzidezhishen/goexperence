@@ -1,8 +1,7 @@
-package main
+package arrayz
 
 import (
 	"fmt"
-	"strings"
 )
 
 type ListNode struct {
@@ -18,15 +17,15 @@ var (
 	stack2 []int
 )
 
-func main() {
-	s := "dsada"
-	strings.Replace(s, "a", "b", -1)
-	a := Fibonacci(5)
-	fmt.Println(a)
-	result1 := stringToIntb("132")
-	fmt.Println("result1", result1)
+// func main() {
+// 	s := "dsada"
+// 	strings.Replace(s, "a", "b", -1)
+// 	a := Fibonacci(5)
+// 	fmt.Println(a)
+// 	result1 := stringToIntb("132")
+// 	fmt.Println("result1", result1)
 
-}
+// }
 func push(node int) {
 	stack1 = append(stack1, node)
 }
@@ -47,7 +46,7 @@ func pop() int {
 	return ans
 }
 
-//斐波那契
+// 斐波那契
 func Fibonacci(n int) int {
 	if n == 0 {
 		return 0
@@ -64,7 +63,7 @@ func Fibonacci(n int) int {
 	return cur
 }
 
-//二维数组查找值
+// 二维数组查找值
 func Find(target int, array [][]int) bool {
 	// write code here
 	for i := 0; i < len(array); i++ {
@@ -77,7 +76,7 @@ func Find(target int, array [][]int) bool {
 	return false
 }
 
-//二维数组查找值 参数有数组是 注意考虑数组长度为0
+// 二维数组查找值 参数有数组是 注意考虑数组长度为0
 func Find_a(target int, array [][]int) bool {
 	// write code here
 	l := len(array[0])
@@ -100,7 +99,7 @@ func Find_a(target int, array [][]int) bool {
 	return false
 }
 
-//输入一个链表，按链表从尾到头的顺序返回一个ArrayList。
+// 输入一个链表，按链表从尾到头的顺序返回一个ArrayList。
 func printListFromTailToHead(head *ListNode) []int {
 	// write code here
 	vals := []int{}
@@ -118,7 +117,7 @@ func printListFromTailToHead(head *ListNode) []int {
 	return vals
 }
 
-//递归求解
+// 递归求解
 func printListFromTailToHead_recursion(head *ListNode) []int {
 	// write code here
 	if head == nil {
@@ -144,7 +143,7 @@ func ReverseList(phead *ListNode) *ListNode {
 	return phead
 }
 
-//是否为丑数
+// 是否为丑数
 func isUgly(num int) bool {
 	if num == 0 {
 		return false
@@ -163,7 +162,7 @@ func isUgly(num int) bool {
 	return false
 }
 
-//非递归丑数
+// 非递归丑数
 func isUglyA(num int) bool {
 	if num == 0 {
 		return false
@@ -183,7 +182,7 @@ func isUglyA(num int) bool {
 
 }
 
-//把字符串转成整数
+// 把字符串转成整数
 func stringToInta(s string) int {
 	p := 0
 	num := 0
@@ -208,6 +207,7 @@ func stringToInta(s string) int {
 		//p控制数值的位数
 		p++
 	}
+
 	if flag == true {
 		num = -num
 	}
@@ -226,7 +226,7 @@ func stringToIntb(s string) int {
 			val = val*10 + int(ch-'0')
 		default:
 			return 0
-
+			w
 		}
 	}
 	if flag {

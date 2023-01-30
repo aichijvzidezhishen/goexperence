@@ -128,5 +128,3 @@ func parse(s string) []int {
 	}
 	return res
 }
-
-//

@@ -16,6 +16,11 @@ import (
 	"time"
 )
 
+//解析header中url
+// 文件是否支持断点续传 range
+// 下载请求（预设下载头尾字节）
+// 拼接文件 多开groutinue
+
 func parseFileInfoFrom(resp *http.Response) string {
 	contentDisposition := resp.Header.Get("Content-Disposition")
 	if contentDisposition != "" {
@@ -46,6 +51,7 @@ func NewFileDownloader(url, outputFileName, outputDir string, totalPart int) *Fi
 		wd, err := os.Getwd() //获取当前工作目录
 		if err != nil {
 			log.Println(err)
+
 		}
 		outputDir = wd
 	}
@@ -175,6 +181,8 @@ func (d FileDownloader) downloadPart(c filePart) error {
 
 }
 
+// User-Agent
+// mojocn
 // getNewRequest 创建一个request
 func (d FileDownloader) getNewRequest(method string) (*http.Request, error) {
 	r, err := http.NewRequest(
