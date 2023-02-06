@@ -1,9 +1,9 @@
 package main
 
-import (
-	"hw/hash"
-)
+import "hw/string_alo"
 
 func main() {
-	hash.MergeTableRecord()
+	//字符统计
+	string_alo.CharStatistic()
+
 }
