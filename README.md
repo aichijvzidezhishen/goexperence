@@ -9,8 +9,14 @@
 ### 
 代理
 
-## base
-1. 无缓冲 Chan 的发送和接收是否同步
+## hw/base
+1. 无缓冲 Chan 的发送和接收是否同步  
+ch := make(chan int)    `无缓冲的channel`由于没有缓冲发送和接收需要同步.  
+ch := make(chan int, 2) `有缓冲channel`不要求发送和接收操作同步.   
+
+---
+- channel无缓冲时，发送阻塞直到数据被接收，接收阻塞直到读到数据。
+- channel有缓冲时，当缓冲满时发送阻塞，当缓冲空时接收阻塞。  
 2. go语言的并发机制以及它所使用的CSP并发模型
 3. Golang 中常用的并发模型？
 4. JSON 标准库对 nil slice 和 空 slice 的处理是一致的吗？
@@ -39,6 +45,8 @@
     - 基于数据库实现分布式锁
     - 基于Zookeeper实现分布式锁
 17. goroutinue channel mutex 应用场景
+    mutex 用于顺序的访问资源
+    channel 用于在 goroutine 之间编排计算。
     数据流动
 18. log 线程安全么  
     Golang的标准库提供了log的机制，但是该模块的功能较为简单（看似简单，其实他有他的设计思路）。在输出的位置做了线程安全的保护
@@ -74,7 +82,7 @@ Redis 里数据结构的实现熟悉吗?
 2. 
 3. 
 ## NetWork
-1. 公网内网
+1. 公网 内网 专用网络
 2. 代理
 3. websocket 属于网络分层那一层
 4. 
