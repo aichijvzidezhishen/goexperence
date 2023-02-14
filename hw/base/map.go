@@ -29,5 +29,5 @@ func e() {
 	m.RLock()
 	read := m.m1["key"]
 	m.RUnlock()
-	fmt.Println("")
+	fmt.Println("read", read)
 }
