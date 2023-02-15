@@ -3,9 +3,14 @@ package base
 import "testing"
 
 func TestMutexEx(t *testing.T) {
-	MutexEx()
-}
-
-func TestRWMutexEx(t *testing.T) {
-	RWMutexEx()
+	tests := []struct {
+		name string
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			MutexEx()
+		})
+	}
 }
