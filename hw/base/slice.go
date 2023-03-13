@@ -2,7 +2,7 @@ package base
 
 import "fmt"
 
-//ex1
+// ex1
 func Entrance1() {
 	var s []int
 	for i := 1; i <= 3; i++ {
@@ -21,7 +21,7 @@ func reverse1(s []int) {
 	}
 }
 
-//ex1
+// ex1
 func Entrance2() {
 	var s []int
 	for i := 1; i <= 3; i++ {
