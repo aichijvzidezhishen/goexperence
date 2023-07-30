@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func PointMove(input string) (int, int) {
@@ -144,4 +145,9 @@ func CharStatistic() {
 		}
 	}
 	fmt.Println(len(m))
+}
+
+func GetWeek(t time.Time) string {
+	year, week := t.ISOWeek()
+	return strconv.Itoa(year) + strconv.Itoa(week)
 }
