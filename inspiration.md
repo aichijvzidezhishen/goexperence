@@ -52,7 +52,38 @@ braid 项目脚手架 负责节点调度 服务治理 grpc 通信() 消息队列
 16. linkcache
 17. 限流器 令牌桶、漏桶、提供一个本地支持、redis 挂掉后 可以维持服务器正常运行
 18. redis 数据结构 zset、set、hash、string、
+  zset:1/(1-q)
 19. mongo 聚合查询 相比mysql 、 mysql 预加载、索引、引擎啥的了解下
 20. 路由层抽象出来
 21. 社交服单独做个微服务，支持多开、mongo拉10000个玩家、定时任务会出现内存的峰值
-22. 
+    不从数据拉取优化，从业务上，区分读写好友池， 好友业务逻辑不受写好友池的影响 ，要加锁
+
+
+
+
+
+
+### mongo
+
+## 聚合
+1.  $project filter cond  
+
+    $filter: {
+                    input: "$baginfo.items",
+                    as: "item",
+                    cond: {
+                        $in: ["$$item.dictid", {
+                            $ifNull: ["$baseInfo.usemedallist", []]
+                        }]
+                    }
+                }
+2. 数组字段查询
+    a. 过滤数组中不需要的字段 $not $in
+    {{"items.id:  {$not :{$in [1,2,3]}}}}
+    b. $unwind
+    c. push 
+    
+3. 分组
+    group 
+    {$group : {_id:"xxx",count :{ $sum : 1}}}
+    {$match : {count : {$gt :1 }}}
