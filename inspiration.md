@@ -31,6 +31,58 @@ redis 事务
 
 当一个命令在事务执行，失败后，redis会中止事务的执行，并且不会执行官事务队列中剩余的命令，已经成功执行的命令不会撤销或者回滚。 
 
+## 碰倒一个切片浅拷贝的问题
+
+··· go
+        type Event struct {
+        Eventid int32
+        Idlist  []string
+    }
+
+    type Events struct {
+        List []Event
+    }
+
+    func (es *Events) Refresh() {
+        for _, v := range es.List {
+            v.RefreshEvent()
+        }
+    }
+
+    func (e *Event) RefreshEvent() {
+        PrintSliceStruct(&e.Idlist, "RefreshEvent")
+        for k := range e.Idlist {
+            e.Idlist[k] = "test" + strconv.Itoa(int(e.Eventid))
+        }
+    }
+
+    func PrintSliceStruct(s1 *[]string, from string) {
+        sh := (*reflect.SliceHeader)(unsafe.Pointer(s1))
+        fmt.Printf("from %v slice addr %+v\n", from, sh)
+    }
+
+    type Slice struct {
+        unsafe.Pointer
+        len 
+        cap 
+    }
+    浅拷贝 复制出来的对象和原对象指向同一地址
+    var a []int32{1,2,3}
+    //b 会新开辟一块内同空间，指向新的地址，但是b的底层数组指针还是和原切片相同
+    b := a
+    b1 := a[:]
+    b2 := a[start:end]
+
+    //深拷贝
+    copy() 内置函数
+    a := []int{1, 2, 3}
+    b := []int{-1, -2, -3, -4}
+    copy(b, a)
+    fmt.Println(unsafe.Pointer(&a))  // 0xc0000a4018
+    fmt.Println(a, &a[0])            // [1 2 3] 0xc0000b4000
+    fmt.Println(unsafe.Pointer(&b))  // 0xc0000a4030
+    fmt.Println(b, &b[0])    // [1,2,3,-4]
+···
 
 ### 项目梳理：
 braid 项目脚手架 负责节点调度 服务治理 grpc 通信() 消息队列
