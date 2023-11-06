@@ -31,6 +31,58 @@ redis 事务
 
 当一个命令在事务执行，失败后，redis会中止事务的执行，并且不会执行官事务队列中剩余的命令，已经成功执行的命令不会撤销或者回滚。 
 
+## 碰倒一个切片浅拷贝的问题
+
+··· go
+        type Event struct {
+        Eventid int32
+        Idlist  []string
+    }
+
+    type Events struct {
+        List []Event
+    }
+
+    func (es *Events) Refresh() {
+        for _, v := range es.List {
+            v.RefreshEvent()
+        }
+    }
+
+    func (e *Event) RefreshEvent() {
+        PrintSliceStruct(&e.Idlist, "RefreshEvent")
+        for k := range e.Idlist {
+            e.Idlist[k] = "test" + strconv.Itoa(int(e.Eventid))
+        }
+    }
+
+    func PrintSliceStruct(s1 *[]string, from string) {
+        sh := (*reflect.SliceHeader)(unsafe.Pointer(s1))
+        fmt.Printf("from %v slice addr %+v\n", from, sh)
+    }
+
+    type Slice struct {
+        unsafe.Pointer
+        len 
+        cap 
+    }
+    浅拷贝 复制出来的对象和原对象指向同一地址
+    var a []int32{1,2,3}
+    //b 会新开辟一块内同空间，指向新的地址，但是b的底层数组指针还是和原切片相同
+    b := a
+    b1 := a[:]
+    b2 := a[start:end]
+
+    //深拷贝
+    copy() 内置函数
+    a := []int{1, 2, 3}
+    b := []int{-1, -2, -3, -4}
+    copy(b, a)
+    fmt.Println(unsafe.Pointer(&a))  // 0xc0000a4018
+    fmt.Println(a, &a[0])            // [1 2 3] 0xc0000b4000
+    fmt.Println(unsafe.Pointer(&b))  // 0xc0000a4030
+    fmt.Println(b, &b[0])    // [1,2,3,-4]
+···
 
 ### 项目梳理：
 braid 项目脚手架 负责节点调度 服务治理 grpc 通信() 消息队列
@@ -39,6 +91,16 @@ braid 项目脚手架 负责节点调度 服务治理 grpc 通信() 消息队列
 
 
 2. 起一个微服务需要什么
+    一致性 加权轮询（每个节点存储的数据相同）
+    hash算法扩容？？
+    一致性哈希解决了扩容缩容问题  对2^32取模 哈希环
+        a. 对存储节点哈希
+        b.  对key哈希 首先，对 key 进行哈希计算，确定此 key 在环上的位置；
+            然后，从这个位置沿着顺时针方向走，遇到的第一节点就是存储 key 的节点。
+            因此，在一致哈希算法中，如果增加或者移除一个节点，仅影响该节点在哈希环上顺时针相邻的后继节点，其它数据也不会受到影响。
+            但是一致性哈希算法并不保证节点能够在哈希环上分布均匀，这样就会带来一个问题，会有大量的请求集中在一个节点上。
+        c.通过虚拟节点提高均衡度
+          不再将真实节点映射到哈希环上，而是将虚拟节点映射到哈希环上，并将虚拟节点映射到实际节点，所以这里有「两层」映射关系。
 3. 你对微服务的理解 分几个部分
     （1）服务之间的通信
         网关：

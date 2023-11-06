@@ -1,6 +1,11 @@
 package base
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+	"strconv"
+	"unsafe"
+)
 
 // ex1
 func Entrance1() {
@@ -56,4 +61,38 @@ func reverse3(s []int) {
 		j = len(s) - (i + 1)
 		s[i], s[j] = s[j], s[i]
 	}
+}
+
+type Event struct {
+	Eventid int32
+	Idlist  []string
+}
+
+type Events struct {
+	List []Event
+}
+
+func (es *Events) Refresh() {
+	for _, v := range es.List {
+		v.RefreshEvent()
+	}
+}
+
+func (e *Event) RefreshEvent() {
+	PrintSliceStruct(&e.Idlist, "RefreshEvent")
+	for k := range e.Idlist {
+		e.Idlist[k] = "test" + strconv.Itoa(int(e.Eventid))
+	}
+}
+
+func PrintSliceStruct(s1 *[]string, from string) {
+	sh := (*reflect.SliceHeader)(unsafe.Pointer(s1))
+	fmt.Printf("from %v slice addr %+v\n", from, sh)
+}
+
+func DeepCopy(dist []int32) (s1 []int32) {
+	s1 = []int32{3, 21, 1, 4}
+	copyNum := copy(s1, dist)
+	fmt.Println("copyNum", copyNum)
+	return s1
 }
