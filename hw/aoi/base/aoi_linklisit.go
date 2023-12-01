@@ -1,6 +1,10 @@
 package base
 
-import "sync"
+import (
+	"fmt"
+	"math"
+	"sync"
+)
 
 const (
 	limit    = 0
@@ -19,8 +23,8 @@ type AoiNode struct {
 	yPre, yNext *AoiNode
 	x, y        float32
 	radis       float32
-	// listener AOIEvent
-	object interface{}
+	listener    AoiEvent
+	object      interface{}
 }
 
 type AoiList struct {
@@ -110,90 +114,63 @@ func (l *AoiList) Remove(node *AoiNode) {
 		} else {
 			l.xList = nil
 		}
-
+	} else if node.yPre != nil && node.yNext != nil {
+		node.yPre.yNext = node.yNext
+		node.yNext.yPre = node.yPre
+	} else if node.yPre != nil {
+		node.yPre.yNext = nil
 	}
-	// if  {
 
-	// }
+	node.xPre = nil
+	node.xNext = nil
+	node.yPre = nil
+	node.yNext = nil
 }
 
-// func NewAoiNode(layer, value float64, entity interface{}, left, right *AoiNode) *AoiNode {
-// 	return &AoiNode{
-// 		Value:   value,
-// 		Entity:  entity,
-// 		Left:    left,
-// 		Right:   right,
-// 		Top:     nil,
-// 		Down:    nil,
-// 		_sync:   sync.WaitGroup{},
-// 	}
-// }
+func (l *AoiList) findInNeighbors(node *AoiNode) map[*AoiNode]struct{} {
+	var neighbors map[*AoiNode]struct{}
+	for curnode := node.xNext; curnode != nil; curnode = curnode.xNext {
+		if curnode.x-node.x > node.radis {
+			break
+		}
+		if math.Abs(float64(curnode.y-node.y)) <= float64(node.radis) {
+			neighbors[node] = struct{}{}
+		}
 
-// func (n *AoiNode) Add(layer, value float64, entity interface{}, left, right *AoiNode) *AoiNode {
-// 	n.Value = value
-// 	n.Entity = entity
-// 	n.Left = left
-// 	n.Right = right
-// 	n.Down = nil
+	}
+	for curnode := node.xPre; curnode != nil; curnode = curnode.xPre {
+		if node.x-curnode.x > node.radis {
+			break
+		}
+		if math.Abs(float64(curnode.y-node.y)) <= float64(node.radis) {
+			neighbors[node] = struct{}{}
+		}
+	}
+	return neighbors
+}
 
-// 	for ; layer > 1 && rand.Intn(2) == 0; layer-- {
-// 		n = n.Down = NewAoiNode(layer-1, value, entity, left, right)
-// 	}
+func (l *AoiList) EnterAoi(node *AoiNode) {
+	l.Add(node)
+	var nodelist []*AoiNode
+	neighbors := l.findInNeighbors(node)
+	for neighbor := range neighbors {
+		neighbor.listener.OnEnterAoi([]*AoiNode{node})
+		nodelist = append(nodelist, node)
+	}
+	node.listener.OnEnterAoi(nodelist)
+}
 
-// 	return n
-// }
+func (l *AoiList) LeaveAoi(node *AoiNode) {
+	l.Remove(node)
 
-// func (n *AoiNode) Remove() {
-// 	var tmp *AoiNode
-// 	for n.Top != nil {
-// 		tmp = n
-// 		n = n.Top
-// 		n.Down = tmp
-// 	}
-// }
+}
 
-// func (n *AoiNode) Move(target float64) {
-// 	var cur *AoiNode = n
+type AoiEventTrriger struct {
+	node *AoiNode
+}
 
-// 	for {
-// 		if target > cur.Value {
-// 			for cur.Right != nil && target > cur.Right.Value {
-// 				cur = cur.Right
-// 			}
-// 			if cur.Right != nil {
-// 				var findNode *AoiNode = cur
-// 				for findNode.Right != nil && target > findNode.Right.Value {
-// 					findNode = findNode.Right
-// 				}
-// 				cur.Left = findNode
-// 				cur.Right = findNode.Right
-// 				if findNode.Right != nil {
-// 					findNode.Right.Left = cur
-// 				}
-// 				findNode.Right = cur
-// 			}
-// 		} else {
-// 			for cur.Left != nil && target < cur.Left.Value {
-// 				cur = cur.Left
-// 			}
-// 			if cur.Left != nil {
-// 				var findNode *AoiNode = cur
-// 				for findNode.Left != nil && target < findNode.Left.Value {
-// 					findNode = findNode.Left
-// 				}
-// 				cur.Right = findNode
-// 				cur.Left = findNode.Left
-// 				if findNode.Left != nil {
-// 					findNode.Left.Right = cur
-// 				}
-// 				findNode.Left = cur
-// 			}
-// 		}
-
-// 		cur.Value = target
-// 		if cur.Top == nil {
-// 			break
-// 		}
-// 		cur = cur.Top
-// 	}
-// }
+func (a *AoiEventTrriger) OnEnterEvent(nodeList []*AoiNode) {
+	for _, node := range nodeList {
+		fmt.Println("node enter", node.x, node.y)
+	}
+}

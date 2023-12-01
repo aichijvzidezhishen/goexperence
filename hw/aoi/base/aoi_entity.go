@@ -90,7 +90,7 @@ type AoiEvent interface {
 type AoiAction interface {
 	EnterAoi(node *AoiNode)
 	LeaveAoi(node *AoiNode)
-	MoveAoi(node *AoiNode)
+	MoveAoi(node *AoiNode, dstX, dstY float32)
 	FindNeighbors(node *AoiNode, radius float32) map[*AoiNode]struct{}
 	Print()
 }
