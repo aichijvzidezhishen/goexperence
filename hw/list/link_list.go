@@ -62,6 +62,4 @@ func DelStable(pos int) {
 		fmt.Println(cur.val)
 		cur = cur.next
 	}
-	fmt.Println("---")
-
 }

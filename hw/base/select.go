@@ -68,4 +68,30 @@ func OsExitNotify() {
 	// ...
 }
 
-//服务器优雅启停
+// 服务器优雅启停
+func TestSignalNotify() {
+	//定义一个传递信号量
+	ch := make(chan os.Signal, 1)
+
+	//说明需要被捕获的信号量
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
+	// 未收到信号量输出 ，一直阻塞
+
+	go func() {
+		for {
+			c := <-ch
+			switch c {
+			//检测到信号量输出，退出
+			case syscall.SIGINT, syscall.SIGTERM:
+				fmt.Println("recv signal", c)
+				// publish
+				return
+			case syscall.SIGHUP: //已经关闭
+
+			default:
+				return
+			}
+		}
+	}()
+}

@@ -1,4 +1,4 @@
-package main
+package redislock
 
 import (
 	"context"
@@ -24,15 +24,17 @@ func NewRedisLock(redisClient *redis.Client, lockKey string, lockTimeout time.Du
 
 func (rl *RedisLock) AcquireLock() bool {
 	ctx := context.TODO()
-	timeout := time.After(5 * time.Second) // 设置超时时间为5秒
+	timeout := time.After(2 * time.Second) // 设置超时时间为5秒
 
 	for {
 		select {
 		case <-timeout:
 			// 超时退出
+			fmt.Println("timeout exit...")
 			return false
 		default:
 			// 获取当前时间戳
+			time.Sleep(10 * time.Second)
 			currentTime := time.Now().UnixNano() / int64(time.Millisecond)
 			// 尝试在Redis实例上设置锁
 			lockAcquired, err := rl.redisClient.SetNX(ctx, rl.lockKey, currentTime, rl.lockTimeout).Result()
@@ -66,6 +68,8 @@ func main() {
 		Password: "", // 如果有密码
 		DB:       0,  // 默认数据库
 	})
+
+	fmt.Println("连接测试", redisClient.Ping(context.TODO()))
 
 	lock := NewRedisLock(redisClient, "my_lock", 10*time.Second) // 锁的有效时间为10秒
 
