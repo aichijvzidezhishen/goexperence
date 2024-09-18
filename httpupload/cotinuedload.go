@@ -217,7 +217,11 @@ func (d FileDownloader) mergeFileParts() error {
 	totalSize := 0
 	for _, s := range d.doneFilePart {
 
-		mergedFile.Write(s.Data)
+		_, err = mergedFile.Write(s.Data)
+		if err != nil {
+			fmt.Println("merge file faild", err)
+			continue
+		}
 		hash.Write(s.Data)
 		totalSize += len(s.Data)
 	}
@@ -225,9 +229,9 @@ func (d FileDownloader) mergeFileParts() error {
 		return errors.New("文件不完整")
 	}
 
-	hex.EncodeToString(hash.Sum(nil))
+	fmt.Println(hex.EncodeToString(hash.Sum(nil)))
 	//https://download.jetbrains.com/go/goland-2020.2.2.dmg.sha256?_ga=2.223142619.1968990594.1597453229-1195436307.1493100134
-	if hex.EncodeToString(hash.Sum(nil)) != "3af4660ef22f805008e6773ac25f9edbc17c2014af18019b7374afbed63d4744" {
+	if hex.EncodeToString(hash.Sum(nil)) != "f635bc84ea0d06e67c8f3efe4d3fb049fb94fa9f26935bfd6ede359ec1806ba4" {
 		return errors.New("文件损坏")
 	} else {
 		log.Println("文件SHA-256校验成功")

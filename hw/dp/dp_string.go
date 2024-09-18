@@ -4,6 +4,10 @@ import (
 	"fmt"
 )
 
+//插入一个字符
+//删除一个字符
+//替换一个字符
+
 // 字符串编辑距离
 func DpAloLevenshtein(param []string) {
 	// var param []string

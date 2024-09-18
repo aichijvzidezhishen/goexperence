@@ -2,7 +2,9 @@ package base
 
 import (
 	"fmt"
+	"log"
 	"sync"
+	"time"
 )
 
 func SyncMap() {
@@ -30,4 +32,40 @@ func e() {
 	read := m.m1["key"]
 	m.RUnlock()
 	fmt.Println("read", read)
+}
+
+type SMap struct {
+	rmx sync.RWMutex
+	c   map[string]*Entery
+}
+
+type Entery struct {
+	ch      chan struct{}
+	val     interface{}
+	isexist bool
+}
+
+// 会阻塞 等待key 或者超时
+func (m *SMap) Rd(key string, tt time.Duration) interface{} {
+	m.rmx.RLock()
+	if e, ok := m.c[key]; ok && e.isexist {
+		// fmt.Prin
+		m.rmx.RUnlock()
+		return e.val
+	} else if !ok {
+		m.rmx.RUnlock()
+		m.rmx.Lock()
+		e = &Entery{ch: make(chan struct{}), isexist: false}
+		m.c[key] = e
+		m.rmx.Unlock()
+		log.Println("协程阻塞 —>", key)
+		select {
+		case <-e.ch:
+			return e.val
+		case <-time.After(tt):
+			log.Println("协程超时 ->", key)
+			return nil
+		}
+	}
+	return nil
 }

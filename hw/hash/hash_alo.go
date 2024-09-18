@@ -6,7 +6,8 @@ import (
 	"strconv"
 )
 
-// 数据表记录包含表索引index和数值value（int范围的正整数），请对表索引相同的记录进行合并，即将相同索引的数值进行求和运算，输出按照index值升序进行输
+// 数据表记录包含表索引index和数值value（int范围的正整数），
+// 请对表索引相同的记录进行合并，即将相同索引的数值进行求和运算，输出按照index值升序进行输
 func MergeTableRecord() {
 	hash := make(map[int]int)
 	var key, value, num int
@@ -32,9 +33,29 @@ func MergeTableRecord() {
 	for _, v := range nums {
 		fmt.Printf("%d %d \n", v[0], v[1])
 	}
+
 }
 
+// 编写一个程序，找出数字数组中重复的数字。
 func NorepeatNum(num int) {
+	var (
+		str    string
+		record = make(map[string]bool)
+		out    string
+	)
+	str = strconv.Itoa(num)
+	for i := len(str) - 1; i >= 0; i-- {
+		if record[string(str[i])] {
+			continue
+		} else {
+			record[string(str[i])] = true
+		}
+		out += string(str[i])
+	}
+	fmt.Println(out)
+}
+
+/* func NorepeatNum(num int) {
 	var (
 		// num int
 		str    string
@@ -55,7 +76,7 @@ func NorepeatNum(num int) {
 	}
 	fmt.Println(out)
 
-}
+} */
 
 func CharNum(n string) {
 	var (
