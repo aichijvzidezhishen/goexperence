@@ -106,7 +106,6 @@ func (b *BST) Max() (int, bool) {
 }
 
 func max(node *Node) (int, bool) {
-	// return max(bst.)
 	if node == nil {
 		return 0, false
 	}

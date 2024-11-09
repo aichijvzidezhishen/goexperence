@@ -263,9 +263,9 @@ func (lim *RedisLimiter) reserveN(now time.Time, n int, maxFutureReserveSecond i
 	}
 	//lua 脚本预加载
 	lim.Client.ScriptLoad(context.Background(), reserveNScript)
-
-	res, err := lim.Client.EvalSha(context.Background(), reserveNScript, []string{lim.Key}, lim.QPS, lim.Burst, now.Unix(), n, maxFutureReserveSecond).Result()
-
+	// lim.Client.ScriptLoad(context.Background(), cancelAtScript)
+	res, err := lim.Client.EvalSha(context.Background(), reserveNScript,
+		[]string{lim.Key}, lim.QPS, lim.Burst, now.Unix(), n, maxFutureReserveSecond).Result()
 	if err != nil && err != redis.Nil {
 		return nil, err
 	}

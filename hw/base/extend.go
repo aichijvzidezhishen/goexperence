@@ -10,17 +10,16 @@ type Task struct {
 	EndTime   int64
 }
 
+type TaskExec interface {
+	exec()
+}
+
 func (t Task) start() {
 	t.StartTime = time.Now().Unix()
-
 }
 
 func (t Task) end() {
 	t.EndTime = time.Now().Unix()
-}
-
-type TaskExec interface {
-	exec()
 }
 
 type TaskA struct {

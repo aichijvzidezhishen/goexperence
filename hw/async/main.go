@@ -30,11 +30,11 @@ func gendataII(numGoRoutines, numElements int) []int {
 	wg.Wait()
 
 	// Create the result by appending all the sub-slices into one result slice
-	// var res []int
-	// for i := 0; i < numGoRoutines; i++ {
-	// 	res = append(res, ssi[i]...)
-	// }
-
+	var res []int
+	for i := 0; i < numGoRoutines; i++ {
+		res = append(res, ssi[i]...)
+	}
+	fmt.Println("res elements: ", res)
 	return result
 }
 func gendata(numGoRoutines, numElements int) []int {

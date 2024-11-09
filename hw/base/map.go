@@ -25,7 +25,9 @@ func SyncMap() {
 var m = struct {
 	sync.RWMutex
 	m1 map[string]int
-}{m1: make(map[string]int)}
+}{
+	m1: make(map[string]int),
+}
 
 func e() {
 	m.RLock()
@@ -48,16 +50,21 @@ type Entery struct {
 // 会阻塞 等待key 或者超时
 func (m *SMap) Rd(key string, tt time.Duration) interface{} {
 	m.rmx.RLock()
+	fmt.Println("m.c[key]", m.c[key])
 	if e, ok := m.c[key]; ok && e.isexist {
-		// fmt.Prin
+		log.Println("key exist", e.val)
 		m.rmx.RUnlock()
 		return e.val
 	} else if !ok {
 		m.rmx.RUnlock()
 		m.rmx.Lock()
-		e = &Entery{ch: make(chan struct{}), isexist: false}
+		e = &Entery{
+			ch:      make(chan struct{}),
+			isexist: true,
+		}
 		m.c[key] = e
 		m.rmx.Unlock()
+
 		log.Println("协程阻塞 —>", key)
 		select {
 		case <-e.ch:

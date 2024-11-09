@@ -8,6 +8,7 @@ type TrieNode struct {
 }
 
 type Trie struct {
+	//
 	root *TrieNode
 }
 
@@ -19,18 +20,18 @@ func NewTrie() *Trie {
 	}
 }
 
-func (t *Trie) Insert(word string) {
-	current := t.root
-	for _, char := range word {
-		if current.children[char] == nil {
-			current.children[char] = &TrieNode{
-				children: make(map[rune]*TrieNode),
-			}
-		}
-		current = current.children[char]
-	}
-	current.isEndOfWord = true
-}
+// func (t *Trie) Insert(word string) {
+// 	current := t.root
+// 	for _, char := range word {
+// 		if current.children[char] == nil {
+// 			current.children[char] = &TrieNode{
+// 				children: make(map[rune]*TrieNode),
+// 			}
+// 		}
+// 		current = current.children[char]
+// 	}
+// 	current.isEndOfWord = true
+// }
 
 func (t *Trie) Search(word string) bool {
 	current := t.root

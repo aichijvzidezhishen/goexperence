@@ -284,26 +284,8 @@ Go拥有强大的编译检查、严格的编码规范和完整的软件生命周
 
 **②不允许有未使用的包或变量**
 
-**③错误处理原始，虽然引入了defer、panic、recover处理出错后的逻辑，函数可以返回多个值，但基本依靠返回错误是否为空来判断函数是否执行成功，if err != nil语句较多，比较繁琐，程序没有java美观。**(官方解释：提供了多个返回值，处理错误方便，如加入异常机制会要求记住一些常见异常，例如IOException，go的错误Error类型较统一方便)
-**④[]interface{}不支持下标操作**                            
-
-**⑤struct没有构造和析构，一些资源申请和释放动作不太方便**
-
-**⑥仍然保留C/C++的指针操作，取地址&，取值\***
-
-### **1、golang 中 make 和 new 的区别？（基本必问）**
-
-**共同点：**给变量分配内存
-
-**不同点：**
-
-1）作用变量类型不同，new给string,int和数组分配内存，make给切片，map，channel分配内存；
-
-2）返回类型不一样，new返回指向变量的指针，make返回变量本身；
-
-3）new 分配的空间被清零。make 分配空间后，会进行初始化；
-
-\4) 字节的面试官还说了另外一个区别，就是分配的位置，在堆上还是在栈上？这块我比较模糊，大家可以自己探究下，我搜索出来的答案是golang会弱化分配的位置的概念，因为编译的时候会自动内存逃逸处理，懂的大佬帮忙补充下：make、new内存分配是在堆上还是在栈上？
+**③错误处理原始
+4) 字节的面试官还说了另外一个区别，就是分配的位置，在堆上还是在栈上？这块我比较模糊，大家可以自己探究下，我搜索出来的答案是golang会弱化分配的位置的概念，因为编译的时候会自动内存逃逸处理，懂的大佬帮忙补充下：make、new内存分配是在堆上还是在栈上？
 
 new和make都在堆上分配内存
 new 函数分配内存，make 函数初始化
@@ -400,11 +382,14 @@ rune 等同于int32,常用来处理unicode或utf-8字符
 
 **参考如下连接**
 
-[golang中struct关于反射tag_paladinosment的博客-CSDN博客_golang 反射tagblog.csdn.net/paladinosment/article/details/42570937](https://link.zhihu.com/?target=https%3A//blog.csdn.net/paladinosment/article/details/42570937)
+[golang中struct关于反射tag_paladinosment的博客-CSDN博客_golang 反射](https://link.zhihu.com/?target=https%3A//blog.csdn.net/paladinosment/article/details/42570937)
 
 type User struct { 	name string `json:name-field` 	age  int } func main() { 	user := &User{"John Doe The Fourth", 20} 	field, ok := reflect.TypeOf(user).Elem().FieldByName("name") 	if !ok { 		panic("Field not found") 	} 	fmt.Println(getStructTag(field)) } func getStructTag(f reflect.StructField) string { 	return string(f.Tag) }
 
 Go 中解析的 tag 是通过反射实现的，反射是指计算机程序在运行时（Run time）可以访问、检测和修改它本身状态或行为的一种能力或动态知道给定数据对象的类型和结构，并有机会修改它。反射将接口变量转换成反射对象 Type 和 Value；反射可以通过反射对象 Value 还原成原先的接口变量；反射可以用来修改一个变量的值，前提是这个值可以被修改；tag是啥:结构体支持标记，name string `json:name-field` 就是 `json:name-field` 这部分
+
+
+[反射原理](https://i6448038.github.io/2020/02/15/golang-reflection/)
 
 **gorm json yaml gRPC protobuf gin.Bind()都是通过反射来实现的**
 
@@ -2052,7 +2037,7 @@ Go的垃圾回收，让堆和栈对程序员保持透明。真正解放了程序
 通过逃逸分析，可以尽量把那些不需要分配到堆上的变量直接分配到栈上，堆上的变量少了，会减轻分配堆内存的开销，同时也会减少gc的压力，提高程序的运行速度。
 
 
-
+  
 ### [GoRoot 和 GoPath 有什么用](http://golang.design/go-questions/compile/gopath/)
 
 

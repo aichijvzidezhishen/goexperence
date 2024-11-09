@@ -77,7 +77,6 @@ func TestDeepCopy(t *testing.T) {
 		wantS1 []int32
 	}{
 		// TODO: Add test cases.
-		// fmt.Println("")
 		{"t1", args{[]int32{1, 2, 3}}, []int32{1, 1, 3}},
 	}
 	for _, tt := range tests {

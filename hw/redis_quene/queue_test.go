@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// redis 实现消息队列
 func Test_queueMessages(t *testing.T) {
 	err := producrMessages("msg1")
 	if err != nil {

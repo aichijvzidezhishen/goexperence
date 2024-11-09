@@ -63,3 +63,5 @@ func DelStable(pos int) {
 		cur = cur.next
 	}
 }
+
+//循环链表 CircularList

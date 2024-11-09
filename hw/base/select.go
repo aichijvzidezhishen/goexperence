@@ -14,12 +14,12 @@ func MultiChanChoose() {
 	ch2 := make(chan string)
 
 	go func() {
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 		ch1 <- 42
 	}()
 
 	go func() {
-		time.Sleep(1 * time.Second)
+		time.Sleep(2 * time.Second)
 		ch2 <- "Hello"
 	}()
 
@@ -91,6 +91,24 @@ func TestSignalNotify() {
 
 			default:
 				return
+			}
+		}
+	}()
+}
+
+func GracefulStartAndStop() {
+	ch := make(chan os.Signal, 1)
+
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
+	go func() {
+		for {
+			c := <-ch
+			switch c {
+			case syscall.SIGINT, syscall.SIGTERM:
+				return
+			case syscall.SIGHUP:
+				//
 			}
 		}
 	}()
