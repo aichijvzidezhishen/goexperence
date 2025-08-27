@@ -18,3 +18,7 @@ func Approximate(x float32) int {
 func MergeSameindex() {
 
 }
+
+func Merge() {
+
+}

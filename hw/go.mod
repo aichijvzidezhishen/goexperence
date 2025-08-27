@@ -4,6 +4,7 @@ go 1.23.2
 
 require (
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/gorilla/websocket v1.5.3
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/time v0.7.0
 )

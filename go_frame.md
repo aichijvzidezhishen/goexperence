@@ -36,19 +36,18 @@
 是的，也不是。原因是：
 
 1. Go 有类型和方法，并且允许面向对象的编程风格，但没有类型层次。
-2. Go 中的 "接口 "概念提供了一种不同的方法，我们认为这种方法易于使用，而且在某些方面更加通用。还有一些方法可以将类型嵌入到其他类型中，以提供类似的东西，但不等同于子类。
+2. Go 中的 "接口 "概念提供了一种不同的方法不等同于子类。
 3. Go 中的方法比 C++ 或 Java 中的方法更通用：它们可以为任何类型的数据定义，甚至是内置类型，如普通的、"未装箱的 "整数。它们并不局限于结构（类）。
 4. Go 由于缺乏类型层次，Go 中的 "对象 "比 C++ 或 Java 等语言更轻巧。
 
 ### 3、Go 实现面向对象编程
 
 #### 封装
-
 面向对象中的 “封装” 指的是可以隐藏对象的内部属性和实现细节，仅对外提供公开接口调用，这样子用户就不需要关注你内部是怎么实现的。
 
 **在 Go 语言中的属性访问权限，通过首字母大小写来控制：**
 
-- 首字母大写，代表是公共的、可被外部访问的。
+- 首字母大写，代表是公共的，可被外部访问的。
 - 首字母小写，代表是私有的，不可以被外部访问。
 
 Go 语言的例子如下：
@@ -286,14 +285,15 @@ Go拥有强大的编译检查、严格的编码规范和完整的软件生命周
 
 **③错误处理原始
 4) 字节的面试官还说了另外一个区别，就是分配的位置，在堆上还是在栈上？这块我比较模糊，大家可以自己探究下，我搜索出来的答案是golang会弱化分配的位置的概念，因为编译的时候会自动内存逃逸处理，懂的大佬帮忙补充下：make、new内存分配是在堆上还是在栈上？
-
+   
 new和make都在堆上分配内存
 new 函数分配内存，make 函数初始化
 https://www.cnblogs.com/chenpingzhao/p/9918062.html
 
 ### 2、[IO多路复用](https://zhuanlan.zhihu.com/p/115220699)
 
-### **3、for range 的时候它的地址会发生变化么？**
+
+### **3、for range 的时候它的地s址会发生变化么？**
 
 答：在 for a,b := range c 遍历中， a 和 b 在内存中只会存在一份，即之后每次循环时遍历到的数据都是以值覆盖的方式赋给 a 和 b，a，b 的内存地址始终不变。由于有这个特性，for 循环里面如果开协程，不要直接把 a 或者 b 的地址传给协程。解决办法：在每次循环时，创建一个临时变量。
 
@@ -306,8 +306,8 @@ https://www.topgoer.cn/docs/golangxiuyang/golangxiuyang-1cmee0q64ij5p
 避坑指南：defer函数紧跟在资源打开后面，否则defer可能得不到执行，导致内存泄露。
 
 多个 defer 调用顺序是 LIFO（后入先出），defer后的操作可以理解为压入栈中
-
-defer，return，return value（函数返回值） 执行顺序：首先return，其次return value，最后defer。defer可以修改函数最终返回值，修改时机：**有名返回值或者函数返回指针** 参考：
+ 
+defer、return、return value（函数返回值） 执行顺序：首先return，其次return value，最后defer。defer可以修改函数最终返回值，修改时机：**有名返回值或者函数返回指针** 参考：
 
 [【Golang】Go语言defer用法大总结(含return返回机制)__奶酪的博客-CSDN博客blog.csdn.net/Cassie_zkq/article/details/108567205](https://link.zhihu.com/?target=https%3A//blog.csdn.net/Cassie_zkq/article/details/108567205)
 
@@ -315,7 +315,7 @@ defer，return，return value（函数返回值） 执行顺序：首先return�
 
 ```go
 func b() (i int) { 	
-    defer func() { 		
+    defer func() { 	
         i++ 		
         fmt.Println("defer2:", i) 	
     }() 	
@@ -327,6 +327,7 @@ func b() (i int) {
     //或者直接写成
     return 
 } 
+
 func main() { 	
     fmt.Println("return:", b()) 
 } 
@@ -336,7 +337,8 @@ func main() {
 
 **函数返回指针**
 
-```go
+```
+go
 func c() *int { 	
     var i int 	
     defer func() { 		
@@ -348,10 +350,12 @@ func c() *int {
         fmt.Println("defer1:", i) 	
     }() 	
     return &i 
-} 
+}
+
 func main() { 	
     fmt.Println("return:", *(c())) 
 }
+
 ```
 
 ### **5、uint 类型溢出问题**
@@ -384,7 +388,7 @@ rune 等同于int32,常用来处理unicode或utf-8字符
 
 [golang中struct关于反射tag_paladinosment的博客-CSDN博客_golang 反射](https://link.zhihu.com/?target=https%3A//blog.csdn.net/paladinosment/article/details/42570937)
 
-type User struct { 	name string `json:name-field` 	age  int } func main() { 	user := &User{"John Doe The Fourth", 20} 	field, ok := reflect.TypeOf(user).Elem().FieldByName("name") 	if !ok { 		panic("Field not found") 	} 	fmt.Println(getStructTag(field)) } func getStructTag(f reflect.StructField) string { 	return string(f.Tag) }
+type User struct { 	name string `json:name-field` 	age  int } func main() { 	user := &User{"John Doe The Fourth", 20} 	field, ok := reflect.TypeOf(user).Elem().FieldByName("name") 	if !ok { panic("Field not found") 	} 	fmt.Println(getStructTag(field)) } func getStructTag(f reflect.StructField) string { 	return string(f.Tag) }
 
 Go 中解析的 tag 是通过反射实现的，反射是指计算机程序在运行时（Run time）可以访问、检测和修改它本身状态或行为的一种能力或动态知道给定数据对象的类型和结构，并有机会修改它。反射将接口变量转换成反射对象 Type 和 Value；反射可以通过反射对象 Value 还原成原先的接口变量；反射可以用来修改一个变量的值，前提是这个值可以被修改；tag是啥:结构体支持标记，name string `json:name-field` 就是 `json:name-field` 这部分
 
@@ -420,7 +424,7 @@ select 结构组成主要是由 case 语句和执行的函数组成 select 实�
 
 2）select 仅支持管道，而且是单协程操作。
 
-3）每个 case 语句仅能处理一个管道，要么读要么写。
+3）每个 case 语句仅能处、一个管道，要、读要么写。
 
 4）多个 case 语句的执行顺序是随机的。
 
@@ -476,7 +480,7 @@ Go提供了map类型，但是我们知道，map类型的key是不能重复的，
 
 代码实现：https://blog.csdn.net/haodawang/article/details/80006059
 
-unsafe.Pointer
+
 
 ### 16、go如何实现类似于java当中的继承机制？
 
@@ -552,22 +556,22 @@ var _ X = T{}
 ```go
 import _ "test/food"
 ```
-
+     
 引入包时，会先调用包中的初始化函数，这种使用方式仅让导入的包做初始化，而不使用包中其他功能
 
 ### 19、goroutine创建的时候如果要传一个参数进去有什么要注意的点？
 
-https://www.cnblogs.com/waken-captain/p/10496454.html
+    https://www.cnblogs.com/waken-captain/p/10496454.html
 
 ### 20、写go单元测试的规范？
 
-1.  **单元测试文件命名规则 ：**
+1.  **单元测试文件命名规则**
 
-单元测试需要创建单独的测试文件，不能在原有文件中书写，名字规则为 xxx_test.go。这个规则很好理解。
+    单元测试需要创建单独的测试文件，不能在原有文件中书写，名字规则为 xxx_test.go。这个规则很好理解。
 
 1.  **单元测试包命令规则** 
 
-单元测试文件的包名为原文件的包名添加下划线接test，举例如下：
+    单元测试文件的包名为原文件的包名添加下划线接test，举例如下：
 
 ```go
 // 原文件包名：
@@ -580,8 +584,7 @@ package xxx_test
 ```
 
 1.  **单元测试方法命名规则** 
-
-单元测试文件中的测试方法和原文件中的待测试的方法名相对应，以Test开头，举例如下：
+    单元测试文件中的测试方法和原文件中的待测试的方法名相对应，以Test开头，举例如下：
 
 ```go
 // 原文件方法：
@@ -797,6 +800,7 @@ https://cloud.tencent.com/developer/article/1539049
 
 1）可以对未初始化的map进行取值，但取出来的东西是空：
 
+
 ```go
 var m1 map[string]string
 fmt.Println(m1["1"])
@@ -818,7 +822,7 @@ panic: assignment to entry in nil map
 （这个区别在最新的Go tips中已经没有了，即：delete一个nil map也不会panic）
 ```
 
-\3) 通过fmt打印map时，空map和nil map结果是一样的，都为map[]。所以，这个时候别断定map是空还是nil，而应该通过map == nil来判断。
+3) 通过fmt打印map时，空map和nil map结果是一样的，都为map[]。所以，这个时候别断定map是空还是nil，而应该通过map == nil来判断。
 
 **nil map 未初始化，空map是长度为空**
 
@@ -1245,7 +1249,7 @@ C++ 和 Go 在定义接口方式上的不同，也导致了底层实现上的不
 
 
 
-## 五**、context相关**
+## 五**、context相关**  
 
 https://www.topgoer.cn/docs/gozhuanjia/chapter055.3-context
 
@@ -1327,7 +1331,6 @@ type hchan struct {
 - 从一个 nil channel 接收数据，造成永远阻塞
 - 给一个已经关闭的 channel 发送数据，引起 panic
 - 从一个已经关闭的 channel 接收数据，如果缓冲区中为空，则返回一个零值
-- 无缓冲的channel是同步的，而有缓冲的channel是非同步的
 
 以上5个特性是死东西，也可以通过口诀来记忆：“空读写阻塞，写关闭异常，读关闭空零”。
 
@@ -1448,8 +1451,8 @@ M 会从 P 的队列中取一个可执行状态的 G 来执行，如果 P 的本
 
 结合 M（系统线程） 的定位来看，若这么做，有以下问题：
 
-- 一般来讲，M 的数量都会多于 P。像在 Go 中，M 的数量默认是 10000，P 的默认数量的 CPU 核数。另外由于 M 的属性，也就是如果存在系统阻塞调用，阻塞了 M，又不够用的情况下，M 会不断增加。
-- M 不断增加的话，如果本地队列挂载在 M 上，那就意味着本地队列也会随之增加。这显然是不合理的，因为本地队列的管理会变得复杂，且 Work Stealing 性能会大幅度下降。
+- 一般来讲，M 的数量都会多于 P。像在 Go 中，M 的数量默认是 10000，P 的默认数量的 CPU 核数。另外由于 M 的属性，也就是如果存在系统阻塞调用，阻塞了M，又不够用的情况下，M 会不断增加。
+- M 不断增加的话，如果本地队列挂载在 M 上，那就意味着本地队列也会随之增加。这显然是不合理的，因为本地队列的管理会变得复杂，且WorkStealing 性能会大幅度下降。
 - M 被系统调用阻塞后，我们是期望把他既有未执行的任务分配给其他继续运行的，而不是一阻塞就导致全部停止。
 
 因此使用 M 是不合理的，那么引入新的组件 P，把本地队列关联到 P 上，就能很好的解决这个问题。
@@ -1569,7 +1572,7 @@ Go 语言的标准库代码包 sync/atomic 提供了原子的读取（Load 为�
 
 在饥饿模式下，Mutex 的拥有者将直接把锁交给队列最前面的 waiter。新来的 goroutine 不会尝试获取锁，即使看起来锁没有被持有，它也不会去抢，也不会 spin（自旋），它会乖乖地加入到等待队列的尾部。 如果拥有 Mutex 的 waiter 发现下面两种情况的其中之一，它就会把这个 Mutex 转换成正常模式:
 
-1. 此 waiter 已经是队列中的最后一个 waiter 了，没有其它的等待锁的 goroutine 了；
+1. 此 waiter 已经是队列中的最后一个 waiter   goroutine 了；
 2. 此 waiter 的等待时间小于 1 毫秒。
 
 ### 5、goroutine 的自旋占用资源如何解决
@@ -1620,6 +1623,7 @@ func main() {
         }(i)
     }
     wg.Wait()
+    
 }
 ```
 
@@ -1656,7 +1660,7 @@ defer func() {
 ```go
 defer func() {
     if err := recover(); err != nil {
-        // 打印异常，关闭资源，退出此函数
+        // 打印异常，关闭资源，退出此函数s
         fmt.Println(err)
     }
 }()
@@ -1747,7 +1751,8 @@ func main() {
 
 问题
 
-我们可以看到共享内存的方式是可以做到并发，但是我们需要利用共享变量来进行[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)的通信，也就需要使用互斥锁来确保数据安全性，导致代码啰嗦，复杂话，不易维护。我们后续使用go的[消息传递](https://blog.csdn.net/m0_43432638/article/details/108349384)方式避免这些问题。
+我们可以看到共享内存的方式是可以做到并发，但是我们需要利用共享变量来进行[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)的通信，也就需要使用互斥锁来确保数据安全s性，导致代码啰嗦，复杂话，不易维护。我们后续使用go的[消息传递](https://blog.csdn.net/m0_43432638/article/details/108349384)方式避免这些问题。
+
 
 [**消息传递（管道）**](https://blog.csdn.net/m0_43432638/article/details/108349384)
 
@@ -1825,7 +1830,7 @@ GoV1.8 **混合写屏障**规则是：
 
 ```go
 func GC() {
-    n := atomic.Load(&work.cycles)
+     n := atomic.Load(&work.cycles)
     gcWaitOnMark(n)
     gcStart(gcTrigger{kind: gcTriggerCycle, n: n + 1})
     gcWaitOnMark(n + 1)
@@ -1840,7 +1845,7 @@ func GC() {
     cycle := atomic.Load(&work.cycles)
     if cycle == n+1 || (gcphase == _GCmark && cycle == n+2) {
         mProf_PostSweep()
-    }
+    } 
     releasem(mp)
 }
 ```
@@ -1940,8 +1945,9 @@ func main() {
 4）在 slice 或 map 中存储指针。
 
 5）切片（扩容后）长度太大。
-
+ 
 6）在 interface 类型上调用方法。
+
 
 ### 3、请简述 Go 是如何分配内存的？
 
@@ -1971,9 +1977,10 @@ Channel 被设计用来实现协程间通信的组件，其作用域和生命周
 
 大对象：如果申请大于 32k 以上的大对象时，可能会触发 GC 行为。
 
+
 ## 十二、编译
 
-### [逃逸分析是怎么进行的](http://golang.design/go-questions/compile/escape/)
+### [逃逸分析是怎么进行的](http://golang.design/go-questions/compile/escape/)   
 
 
 
@@ -2067,6 +2074,7 @@ pkg 目录下面：
 
 
 Go 工具目录如下，其中比较重要的有编译器 `compile`，链接器 `link`：
+
 
 
 

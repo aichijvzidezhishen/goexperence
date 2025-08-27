@@ -19,6 +19,3 @@ func TestJudge(t *testing.T) {
 
 	Judge(i)
 }
-
-//
-// FuncA()

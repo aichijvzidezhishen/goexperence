@@ -74,5 +74,8 @@ func (m *SMap) Rd(key string, tt time.Duration) interface{} {
 			return nil
 		}
 	}
+	for {
+		time.Sleep(time.Second)
+	}
 	return nil
 }

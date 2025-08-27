@@ -67,6 +67,13 @@ func reverse3(s []int) {
 	}
 }
 
+// nil 和空切片
+func ExNilSlice() {
+	// var s1 []int // 空切片
+	// slice := []int{}
+	// s1 := make([]int, 0) // 空切片
+}
+
 type Event struct {
 	Eventid int32
 	Idlist  []string
@@ -99,4 +106,22 @@ func DeepCopy(dist []int32) (s1 []int32) {
 	copyNum := copy(s1, dist)
 	fmt.Println("copyNum", copyNum, "s1", s1)
 	return s1
+}
+
+// 原地删掉数组中重复的数字
+func removeDuplicates(nums []int) int {
+	n := len(nums)
+	if n <= 2 {
+		return n
+	}
+	slow, fast := 2, 2
+	for fast < n {
+		if nums[slow-2] != nums[fast] {
+			nums[slow] = nums[fast]
+			slow++
+		}
+		fast++
+	}
+	fmt.Println("res", nums[:slow])
+	return slow
 }

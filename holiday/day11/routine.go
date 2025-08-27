@@ -1,12 +1,12 @@
 package main
 
-import(
+import (
 	"fmt"
-	"time"
 	"strconv"
+	"time"
 )
 
-func main01(){
+func main01() {
 	// 在一条独立的协程中执行匿名函数
 	// go func(){
 	// 	for{
@@ -15,17 +15,17 @@ func main01(){
 	// 	}
 	// }()
 	for i := 0; i < 1000000; i++ {
-		go dosomething("小分队"+strconv.Itoa(i))
+		go dosomething("小分队" + strconv.Itoa(i))
 	}
 	//主协程死，子协程也死
-	
-	for{
+
+	for {
 		fmt.Println("main routine")
 		time.Sleep(time.Second)
 	}
 }
-func dosomething(s string){
-	for{
+func dosomething(s string) {
+	for {
 		fmt.Println(s)
 		time.Sleep(time.Second)
 	}

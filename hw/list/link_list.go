@@ -12,7 +12,6 @@ type SingleList struct {
 func (l *SingleList) InsertNode(val, pos int) {
 	cur := l
 	for cur != nil {
-		// if cur.val == pos {
 		tem := cur.next
 		cur.next = &SingleList{
 			val:  0,
@@ -21,7 +20,6 @@ func (l *SingleList) InsertNode(val, pos int) {
 		cur.next.val = val
 		cur.next.next = tem
 
-		// }
 		cur = cur.next
 	}
 }

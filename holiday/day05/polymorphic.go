@@ -5,7 +5,7 @@ import (
 )
 
 type Biology interface {
-	sayhi()
+	Sayhi()
 }
 
 type Man struct {
@@ -18,16 +18,16 @@ type Monster struct {
 	age  int
 }
 
-func (this *Man) sayhi() { // 实现抽象方法1
+func (this *Man) Sayhi() { // 实现抽象方法1
 	fmt.Printf("Man[%s, %d] sayhi\n", this.name, this.age)
 }
 
-func (this *Monster) sayhi() { // 实现抽象方法1
+func (this *Monster) Sayhi() { // 实现抽象方法1
 	fmt.Printf("Monster[%s, %d] sayhi\n", this.name, this.age)
 }
 
 func WhoSayHi(i Biology) {
-	i.sayhi()
+	i.Sayhi()
 }
 
 func main() {

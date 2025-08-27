@@ -1,98 +1,55 @@
 package base
 
-// type AoiEntity struct {
-// 	Key           int64
-// 	X             *AoiNode
-// 	Y             *AoiNode
-// 	ViewEntity    *sync.HashSet //
-// 	ViewEntityBak *sync.HashSet
-// 	Move          func() []int64
-// 	Leave         func() []int64
-// }
+import (
+	"sync"
+)
 
-// func NewAoiEntity(key int64) *AoiEntity {
-// 	return &AoiEntity{
-// 		Key:           key,
-// 		ViewEntity:    sync.NewHashSet(),
-// 		ViewEntityBak: sync.NewHashSet(),
-// 		Move: func() []int64 {
-// 			return (*(this.ViewEntityBak)).Union((*(this.ViewEntity)).Values()).ToArray()
-// 		},
-// 		Leave: func() []int64 {
-// 			return (*(this.ViewEntityBak)).Except((*(this.ViewEntity)).Values()).ToArray()
-// 		},
-// 	}
-// }
-
-// func (this *AoiEntity) Dispose() {
-// 	// (*(this.ViewEntity)).Clear()
-// 	// Pool<sync.HashSet>.Return(this.ViewEntity)
-// 	// (*(this.ViewEntityBak)).Clear()
-// 	// Pool<sync.HashSet>.Return(this.ViewEntityBak)
-// }
-
-// func (this *AoiNode) Dispose() {
-// }
-
-// const (
-// 	PoolSize int = 100
-// )
-
-// var pool = make([]*AoiEntity, PoolSize)
-// var poolMutex = sync.Mutex{}
-
-// func Rent() *AoiEntity {
-// 	poolMutex.Lock()
-// 	defer poolMutex.Unlock()
-
-// 	if len(pool) == 0 {
-// 		return NewAoiEntity(0)
-// 	}
-
-// 	var result *AoiEntity
-// 	for _, item := range pool {
-// 		if item == nil {
-// 			result = item
-// 			break
-// 		}
-// 	}
-
-// 	if result == nil {
-// 		result = NewAoiEntity(0)
-// 	}
-
-// 	pool = append(pool[:len(pool)-1], pool[len(pool):]...)
-
-// 	return result
-// }
-
-// func Return(item *AoiEntity) {
-// 	poolMutex.Lock()
-// 	defer poolMutex.Unlock()
-
-// 	pool = append(pool[:len(pool)-1], item)
-// }
-
-// func (this *AoiEntity) GetMove() []int64 {
-// 	return this.Move()
-// }
-
-// func (this *AoiEntity) GetLeave() []int64 {
-// 	return this.Leave()
-// }
-
-type AoiEvent interface {
-	OnEnterAoi(node []*AoiNode)
-	OnUpdateAoi(node []*AoiNode)
-	OnLeaveAoi(node []*AoiNode)
+type Position struct {
+	X, Y float32
 }
 
-type AoiAction interface {
-	EnterAoi(node *AoiNode)
-	LeaveAoi(node *AoiNode)
-	MoveAoi(node *AoiNode, dstX, dstY float32)
-	FindNeighbors(node *AoiNode, radius float32) map[*AoiNode]struct{}
-	Print()
+// 实体接口
+type Entity interface {
+	GetID() int
+	GetPosition() Position
+	OnEnterAOI(other Entity) // 进入AOI回调
+	OnLeaveAOI(other Entity) // 离开AOI回调
 }
 
-//
+// 网格定义
+type Grid struct {
+	GridID   int
+	Entities map[int]Entity // 当前网格内的实体
+	mu       sync.RWMutex
+}
+
+func NewGrid(id int) *Grid {
+	return &Grid{
+		GridID:   id,
+		Entities: make(map[int]Entity),
+	}
+}
+
+// AOI 管理器
+type AOIManager struct {
+	GridWidth  float32        // 网格宽度
+	GridHeight float32        // 网格高度
+	Grids      map[int]*Grid  // 所有网格
+	Entities   map[int]Entity // 所有实体
+	mu         sync.RWMutex   // 读写锁
+}
+
+// 创建一个新的AOIManager实例
+func NewAOIManager(gridWidth, gridHeight float32) *AOIManager {
+	// 返回一个指向AOIManager实例的指针
+	return &AOIManager{
+		// 设置网格宽度
+		GridWidth: gridWidth,
+		// 设置网格高度
+		GridHeight: gridHeight,
+		// 创建一个空的网格映射
+		Grids: make(map[int]*Grid),
+		// 创建一个空的实体映射
+		Entities: make(map[int]Entity),
+	}
+}
