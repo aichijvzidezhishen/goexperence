@@ -33,7 +33,7 @@ func RecvFromNil() {
 // 同步控制
 
 // 控制并发数量
-func work(id int, jobs <-chan int, res chan<- int, wg sync.WaitGroup) {
+func work(id int, jobs <-chan int, res chan<- int, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for j := range jobs {
 		fmt.Printf("worker %d start job %d\n", id, j)
@@ -53,14 +53,13 @@ func ImplWorker() {
 	//
 	for i := 1; i <= 3; i++ {
 		wg.Add(1)
-		go work(i, jobs, res, wg)
+		go work(i, jobs, res, &wg)
 	}
 
 	for j := 1; j <= 5; j++ {
 		jobs <- j
 	}
 	wg.Wait()
-	// time.Sleep(time.Second * 5)s
 }
 
 // 实现超时控制
@@ -75,7 +74,7 @@ func HandleTimeout() {
 	select {
 	case res := <-ch:
 		fmt.Println(res)
-	case <-time.After(1 * time.Second):
+	case <-time.After(3 * time.Second):
 		fmt.Println("timeout")
 	}
 }

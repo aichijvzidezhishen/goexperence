@@ -1,26 +1,19 @@
 package tree
 
-// 展示里面的节点
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
-
-func NewTreeNode(val int) *TreeNode {
-	return &TreeNode{
-		Val:   val,
-		Left:  nil,
-		Right: nil,
+func NewTreeNode(val int) *Node {
+	return &Node{
+		value: val,
+		left:  nil,
+		right: nil,
 	}
 }
 
 // 深度优先
-func maxDepth(root *TreeNode) int {
+func DFSDepth(root *Node) int {
 	if root == nil {
 		return 0
 	}
-	return maxInt(maxDepth(root.Left), maxDepth(root.Right)) + 1
+	return maxInt(DFSDepth(root.left), DFSDepth(root.right)) + 1
 }
 
 func maxInt(a, b int) int {
@@ -31,26 +24,29 @@ func maxInt(a, b int) int {
 }
 
 // 广度优先
-func maxDepath(root *TreeNode) int {
+func BFSDepth(root *Node) int {
 	if root == nil {
 		return 0
 	}
-	queue := []*TreeNode{}
-	queue = append(queue, root)
-	ans := 0
+
+	queue := []*Node{root}
+	depth := 0 // 深度初始化为0
+	// 深度初始化为0
 	for len(queue) > 0 {
-		size := len(queue)
-		for i := 0; i < size; i++ {
-			node := queue[i]
-			if node.Left != nil {
-				queue = append(queue, node.Left)
+		levelSize := len(queue)
+		for i := 0; i < levelSize; i++ {
+			node := queue[0]  // 取出头节点
+			queue = queue[1:] // 出队
+
+			if node.left != nil {
+				queue = append(queue, node.left)
 			}
-			if node.Right != nil {
-				queue = append(queue, node.Right)
+
+			if node.right != nil {
+				queue = append(queue, node.right)
 			}
 		}
-		queue = queue[size:]
-		ans++
+		depth++
 	}
-	return 0
+	return depth
 }

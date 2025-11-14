@@ -16,7 +16,7 @@ type Item interface {
 }
 
 type Int int
-
+ 
 func (x Int) Less(than Item) bool {
 	log.Println(x, " ", than.(Int))
 	return x < than.(Int)

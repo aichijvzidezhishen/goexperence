@@ -109,6 +109,7 @@ func main075() {
 		//关闭管道时会向所有的读取协程发送通知，通知其不要在遍历了
 
 		fmt.Println("channel close，写入结束")
+
 	}()
 	go func() {
 		// 管道close时结束遍历

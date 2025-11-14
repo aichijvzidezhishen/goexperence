@@ -79,3 +79,15 @@ func (m *SMap) Rd(key string, tt time.Duration) interface{} {
 	}
 	return nil
 }
+
+// mapInternalStruct 是一个函数，用于演示如何通过反射和unsafe包访问Go语言中map的内部结构
+// func mapInternalStruct() {
+// 	// 创建一个初始容量为100的map，键为string类型，值为int类型
+// 	m := make(map[string]int, 100)
+
+// 	// 通过反射获取map的反射值对象
+// 	rm := reflect.ValueOf(m)
+// 	// 通过unsafe.Pointer将map的地址转换为*hmap指针类型
+// 	// hmap是Go语言内部表示map的结构体类型
+// 	// ptr := (*hmap)(unsafe.Pointer(rm.UnsafeAddr()))
+// }

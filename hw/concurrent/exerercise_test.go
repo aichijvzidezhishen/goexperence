@@ -63,6 +63,7 @@ func TestCountLinesInFiles(t *testing.T) {
 			files: []string{"countLine1.txt", "countLine2.txt"},
 		}},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			CountLinesInFiles(tt.args.files)

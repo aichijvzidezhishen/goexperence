@@ -1,13 +1,7 @@
 package tree
 
 type BPlusTree struct {
-	root *Node
-}
-
-type BtreeNode struct {
-	keys   []int
-	values map[int]interface{}
-	childs []*BtreeNode
+	root *BtreeNode
 }
 
 func NewBPlusTree() *BPlusTree {
