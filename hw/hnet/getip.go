@@ -21,10 +21,3 @@ func GetLocalIp() (string, error) {
 
 	return "", fmt.Errorf("no local ip found")
 }
-
-// 
-func Cav()  {
-	
-}
-
-d

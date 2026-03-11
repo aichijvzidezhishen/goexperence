@@ -93,6 +93,6 @@ func StartUDPServer() {
 
 		message := buf[4 : length+4]
 		fmt.Printf("UDP received %s from %s\n", message, addr.String())
-		conn.WriteTo([]byte("ok"), addr)
+		conn.WriteTo([]byte(" k"), addr)
 	}
 }

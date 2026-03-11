@@ -34,9 +34,11 @@ func gendataII(numGoRoutines, numElements int) []int {
 	for i := 0; i < numGoRoutines; i++ {
 		res = append(res, ssi[i]...)
 	}
+
 	fmt.Println("res elements: ", res)
 	return result
 }
+
 func gendata(numGoRoutines, numElements int) []int {
 	var wg sync.WaitGroup
 	wg.Add(numGoRoutines)
@@ -59,6 +61,7 @@ func gendata(numGoRoutines, numElements int) []int {
 
 	return res
 }
+
 func main() {
 	n := 100000000
 

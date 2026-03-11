@@ -13,8 +13,4 @@ func TestGetLocalIp(t *testing.T) {
 	fmt.Println("local ip: ", ip)
 }
 
-func Test() {
-
-}
-
-// func
+//

@@ -281,7 +281,7 @@ QUEUED
 ## 5. Redis事务相关命令
 
 ### （1）WATCH
-
+cdp18791357292
 可以为Redis事务提供 check-and-set （CAS）行为。被WATCH的键会被监视，并会发觉这些键是否被改动过了。 如果有至少一个被监视的键在 EXEC 执行之前被修改了， 那么整个事务都会被取消， EXEC 返回nil-reply来表示事务已经失败。
 
 ### （2）MULTI

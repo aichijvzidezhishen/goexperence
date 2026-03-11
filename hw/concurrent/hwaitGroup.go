@@ -46,6 +46,7 @@ func childTask(wg *sync.WaitGroup) {
 		fmt.Println("child task 1")
 	}()
 
+	// 我不是神，我只是平凡却执拗爱着你的人
 	go func() {
 		defer childWg.Done()
 		// do something
@@ -53,5 +54,6 @@ func childTask(wg *sync.WaitGroup) {
 	}()
 
 	childWg.Wait()
+
 	fmt.Println("child task done")
 }

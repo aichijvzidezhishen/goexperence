@@ -19,7 +19,7 @@
     (1)自己是否是等待队列中最后一个协程
     (2)自己等待的时间是否小于1ms
     如果有任意一个条件满足，将会将锁改为普通模式。
-    一般认为普通模式会有更好的性能，因为即使有等待的协程，新的协程可以连续获取到锁。饥饿模式能够防止等待协程长时间获取不到锁。   `
+    一般认为普通模式会有更好的性能，因为即使有等待的协程，新的协程可以连续获取到锁。饥饿模式能够防止等待协程长时间获取不到锁。   
 1.  Golang的内存模型（小对象多了会增加内存压力）
 2.  slice传参有几种方式不改变原始数据
 3.  epoll 、poll、select
@@ -30,7 +30,7 @@
 8.  并发和并行
 9.  uintptr 和 unsafe.Pointer 的区别
     uintptr 和 unsafe.Pointer 是 Go 语言中用于处理指针的类型，它们的使用场景和特性有所不同。
-
+    
     uintptr 是一个无符号整数类型，用于存储指针的数值。它可以用于将指针转换为整数，以及将整数转换回指针。但是，uintptr 并不保留指针的类型信息，因此在将整数转换回指针时需要确保类型的正确性。uintptr 主要用于底层编程，例如在进行指针运算或与 C 语言进行交互时。
  
     unsafe.Pointer 是一个特殊的指针类型，可以用于存储任意类型的指针。它可以将指针转换为 unsafe.Pointer 类型，以及将 unsafe.Pointer 转换回原始指针类型。unsafe.Pointer 的使用需要谨慎，因为它可以绕过 Go 语言的类型系统，可能导致类型不匹配或内存安全问题。因此，它主要用于与 C 语言进行交互或进行底层编程时，例如在使用 cgo 包调用 C 函数时。
@@ -49,7 +49,8 @@
     - postform、 
 19. context
 20. range 中可能遇到的问题
-    - 
+
+    我的世界变得
     
 drone git secret:b1c0686a3879beca8cbc8f146764896e74d03732
 ## 微服务架构
@@ -64,7 +65,7 @@ drone git secret:b1c0686a3879beca8cbc8f146764896e74d03732
     基于 Docker 的 CI/CD 工具 Drone 所有编译、测试的流程都在 Docker 容器中进行。
     开发者只需在项目中包含 .drone.yml 文件，将代码推送到 git 仓库，Drone 就能够自动化的进行编译、测试、发布。
     持续交付/持续部署 
-·   Trigger:
+   Trigger:
     event :
         - push  
 
@@ -92,7 +93,6 @@ drone git secret:b1c0686a3879beca8cbc8f146764896e74d03732
    未添加索引时执行全量搜索 
 4. 事务隔离级别
 5. 最左匹配原则
-   
 6. MySQL 的特点
 7. MySQL 字段类型
     数值类型
@@ -516,14 +516,14 @@ UNION ALL 使用
     kill -9  12345
     kill -9 $(ps -ef | grep "redis" | grep -v grep | awk '{print $2}')
     kill all redis-server          
-  （3）查看端口占用
+  （3）查看端口占用 
     netstat -tlnp | grep 6379
     lsof -i:6379
   （4）查看内存
     free -h
     
   （5）查看cpu
-    top
+    top 
   （6）查看磁盘
     df -h
   （7）查看系统版本
@@ -534,7 +534,7 @@ UNION ALL 使用
 8. chmod 修改文件权限 还有其他的写法
     chmod 777 file_name
 9. 删除
-     rmdir 
+     rmdir
      rm -r 
      rm file_name
      rm directory_name
@@ -556,3 +556,4 @@ UNION ALL 使用
     more file_name
     less file_name
 15. 文件移动
+    mv file_name distination_directory

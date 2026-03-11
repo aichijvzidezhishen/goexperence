@@ -62,6 +62,8 @@ func ImplWorker() {
 	wg.Wait()
 }
 
+// func
+
 // 实现超时控制
 func doWork(c chan string) {
 	time.Sleep(2 * time.Second)
@@ -106,3 +108,5 @@ func ImplPAndSMod() {
 	}
 	time.Sleep(4 * time.Second)
 }
+
+// 常见的阻塞场景

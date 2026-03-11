@@ -1490,7 +1490,7 @@ M 会从 P 的队列中取一个可执行状态的 G 来执行，如果 P 的本
 
 ![img](https://cdn.nlark.com/yuque/0/2022/png/22219483/1671108479128-e538cce4-0911-4683-ba0a-8a7866e4e2c1.png)
 
-特殊的M0和G0
+特殊的M0和G0   
 
 #### M0
 
@@ -2392,3 +2392,4 @@ go-zero 包含极简的 API 定义和生成工具 goctl，可以根据定义的 
 1、可可酱 [可可酱：Golang常见面试题](https://zhuanlan.zhihu.com/p/434629143)
 
 2、Bel_Ami同学 [golang 面试题(从基础到高级)](https://link.zhihu.com/?target=https%3A//blog.csdn.net/Bel_Ami_n/article/details/123352478)
+
