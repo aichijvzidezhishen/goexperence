@@ -27,14 +27,4 @@ package tree
 	删除操作：
 */
 
-// 展示里面的节点
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
-
 // 二叉树
-func Dun() {
-
-}

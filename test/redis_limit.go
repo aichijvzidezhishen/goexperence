@@ -15,7 +15,7 @@ const (
 	local limit_key = KEYS[1]
 	local qps = tonumber(ARGV[1])
 	local burst = tonumber(ARGV[2])
-	local now = ARGV[3]
+	local now = ARGV[3] 
 	local cost = tonumber(ARGV[4])
 	local max_wait = tonumber(ARGV[5])
 	local tokens = redis.call("hget", limit_key, "token")
@@ -262,14 +262,20 @@ func (lim *RedisLimiter) reserveN(now time.Time, n int, maxFutureReserveSecond i
 		}, nil
 	}
 	//lua 脚本预加载
-	lim.Client.ScriptLoad(context.Background(), reserveNScript)
+	if err := lim.Client.ScriptLoad(context.Background(), reserveNScript).Err(); err != nil {
+		fmt.Println(" script load  err", err)
+	}
+	// lim.Client.ScriptLoad(context.Background(), reserveNScript)
+	// lim.Client.ScriptLoad(context.Background(), cancelAtScript)
 
-	res, err := lim.Client.EvalSha(context.Background(), reserveNScript, []string{lim.Key}, lim.QPS, lim.Burst, now.Unix(), n, maxFutureReserveSecond).Result()
-
+	res, err := lim.Client.EvalSha(context.Background(), reserveNScript,
+		[]string{lim.Key}, lim.QPS, lim.Burst, now.Unix(), n, maxFutureReserveSecond).Result()
 	if err != nil && err != redis.Nil {
+		fmt.Println("preload script err", err)
 		return nil, err
 	}
 
+	// lim.Client.DebugObject()
 	values, ok := res.([]interface{})
 	if !ok {
 		return nil, fmt.Errorf("invaild response, excepted []interface{}, got %v", res)
@@ -279,6 +285,7 @@ func (lim *RedisLimiter) reserveN(now time.Time, n int, maxFutureReserveSecond i
 		return nil, fmt.Errorf("invaild response length, excepted %d, got %d", 2, len(values))
 	}
 
+	// var n int64
 	allow, allowOK := values[0].(int64)
 	wait, waitOK := values[1].(int64)
 	if !allowOK || !waitOK {

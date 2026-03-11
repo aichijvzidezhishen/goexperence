@@ -7,6 +7,10 @@ import (
 	"unsafe"
 )
 
+func Assign1(s []int) {
+	s = []int{6, 6, 6}
+}
+
 // ex1
 func Entrance1() {
 	var s []int
@@ -51,16 +55,23 @@ func Entrance3() {
 		s = append(s, i)
 	}
 	reverse3(s)
-	fmt.Println("s", s)
+	fmt.Println("Entrance3 s", s)
 }
 
 func reverse3(s []int) {
 	s = append(s, 999, 10, 11)
-	fmt.Println("s", s)
+	fmt.Println("reverse3 s", s)
 	for i, j := 0, len(s)-1; i < j; i++ {
 		j = len(s) - (i + 1)
 		s[i], s[j] = s[j], s[i]
 	}
+}
+
+// nil 和空切片
+func ExNilSlice() {
+	// var s1 []int // 空切片
+	// slice := []int{}
+	// s1 := make([]int, 0) // 空切片
 }
 
 type Event struct {
@@ -93,6 +104,24 @@ func PrintSliceStruct(s1 *[]string, from string) {
 func DeepCopy(dist []int32) (s1 []int32) {
 	s1 = []int32{3, 21, 1, 4}
 	copyNum := copy(s1, dist)
-	fmt.Println("copyNum", copyNum)
+	fmt.Println("copyNum", copyNum, "s1", s1)
 	return s1
+}
+
+// 原地删掉数组中重复的数字
+func removeDuplicates(nums []int) int {
+	n := len(nums)
+	if n <= 2 {
+		return n
+	}
+	slow, fast := 2, 2
+	for fast < n {
+		if nums[slow-2] != nums[fast] {
+			nums[slow] = nums[fast]
+			slow++
+		}
+		fast++
+	}
+	fmt.Println("res", nums[:slow])
+	return slow
 }

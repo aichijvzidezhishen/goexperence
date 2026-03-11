@@ -2,6 +2,7 @@ package test
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"sync"
 	"testing"
@@ -15,6 +16,10 @@ func TestXxx(t *testing.T) {
 		Password: "",
 		DB:       0,
 	})
+	err := client.Ping(context.TODO()).Err()
+	if err != nil {
+		fmt.Println("ping faild ", err)
+	}
 
 	r, err := NewRedisLimiter(RedisLimiterConfig{
 		Client: client,
@@ -59,6 +64,10 @@ func BenchmarkT(b *testing.B) {
 
 			for i := 0; i < b.N; i++ {
 				err = r.Wait(context.Background())
+				if err != nil {
+					log.Printf("err:%v", err)
+					continue
+				}
 			}
 		}()
 	}

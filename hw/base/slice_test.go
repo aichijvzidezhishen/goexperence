@@ -77,13 +77,33 @@ func TestDeepCopy(t *testing.T) {
 		wantS1 []int32
 	}{
 		// TODO: Add test cases.
-		// fmt.Println("")
 		{"t1", args{[]int32{1, 2, 3}}, []int32{1, 1, 3}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if gotS1 := DeepCopy(tt.args.dist); !reflect.DeepEqual(gotS1, tt.wantS1) {
 				t.Errorf("DeepCopy() = %v, want %v", gotS1, tt.wantS1)
+			}
+		})
+	}
+}
+
+func Test_removeDuplicates(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{"t1", args{[]int{1, 1, 1, 2, 2, 3}}, 3},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := removeDuplicates(tt.args.nums); got != tt.want {
+				t.Errorf("removeDuplicates() = %v, want %v", got, tt.want)
 			}
 		})
 	}

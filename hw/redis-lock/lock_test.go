@@ -20,7 +20,7 @@ func Test11(t *testing.T) {
 	lock := NewRedisLock(redisClient, "my_lock", 10*time.Second) // 锁的有效时间为10秒
 
 	if lock.AcquireLock() {
-		defer lock.ReleaseLock()
+		// defer lock.ReleaseLock()
 		// 在获取到锁之后执行需要保护的代码
 		fmt.Println("Lock acquired. Executing protected code...")
 		time.Sleep(5 * time.Second) // 模拟执行一些操作

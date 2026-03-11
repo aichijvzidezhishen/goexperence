@@ -27,9 +27,11 @@ func minDistanc(a, b string) int {
 	for loop := range dp {
 		dp[loop] = make([]int, len2+1)
 	}
+
 	for i := range dp {
 		dp[i][0] = i
 	}
+
 	for j := range dp[0] {
 		dp[0][j] = j
 	}
@@ -43,6 +45,7 @@ func minDistanc(a, b string) int {
 			}
 		}
 	}
+
 	return dp[len1][len2]
 }
 
@@ -50,5 +53,7 @@ func min(x, y int) int {
 	if x > y {
 		return y
 	}
-	return x
+	return x // 6186f
 }
+
+// func

@@ -1,6 +1,6 @@
 package main
 
-import "goexperence/hw/string_alo"
+import "hw/string_alo"
 
 func main() {
 	//字符统计

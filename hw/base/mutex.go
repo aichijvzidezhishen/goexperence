@@ -35,6 +35,7 @@ func MutexEx() {
 // func (*RWMutex) Unlock // 写解锁
 // func (*RWMutex) RLock // 读锁定
 // func (*RWMutex) RUnlock // 读解锁
+
 func RWMutexEx() {
 	wg := sync.WaitGroup{}
 	wg.Add(20)

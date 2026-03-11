@@ -87,8 +87,8 @@ func IsSameDay(t1, t2 int64) bool {
 	gt1 := time.Unix(t1, 0)
 	gt2 := time.Unix(t2, 0)
 	return gt1.Year() == gt2.Year() && gt1.Month() == gt2.Month() && gt1.Day() == gt2.Day()
-
 }
+
 func IsAfterDay(t1, t2 time.Time) bool {
 	fmt.Println("t1.YearDay()", t1.YearDay(), t1.Hour())
 

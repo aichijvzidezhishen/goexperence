@@ -4,10 +4,10 @@ import "testing"
 
 func TestTire(t *testing.T) {
 	trie := NewTrie()
-	keys := []string{"her", "say", "she", "shr", "he"}
-	for _, v := range keys {
-		trie.Insert(v)
-	}
+	// keys := []string{"her", "say", "she", "shr", "he"}
+	// for _, v := range keys {
+	// 	trie.Insert(v)
+	// }
 
 	if trie.Search("a") {
 		t.Log("search succ")

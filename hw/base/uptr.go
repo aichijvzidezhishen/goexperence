@@ -1,7 +1,8 @@
 package base
 
 import (
-	"log"
+	"fmt"
+	"slices"
 	"unsafe"
 )
 
@@ -18,7 +19,10 @@ func DiffUintptr() {
 	//此时结果就变成了10，0
 	// log.Printf("sss%v %v", w.b, w.c)
 	// log.Fatal()
-	log.Fatalln("code", w.b)
-	// log.Fatal(w.b, w.c)
-	// fmt.Println(w.b, w.c)
+	fmt.Println("code", w.b)
+	s := []string{"程序员", "陈明勇"}
+	repeat := slices.Repeat(s, 2)
+
+	fmt.Println(w.b, w.c, "repeat", repeat)
+	fmt.Println(w.b, w.c)
 }

@@ -59,7 +59,7 @@ func main072() {
 }
 
 /*
-	校验管道数据的有效性
+校验管道数据的有效性
 */
 func main073() {
 	ch := make(chan int, 3)
@@ -107,7 +107,9 @@ func main075() {
 		}
 		close(ch)
 		//关闭管道时会向所有的读取协程发送通知，通知其不要在遍历了
+
 		fmt.Println("channel close，写入结束")
+
 	}()
 	go func() {
 		// 管道close时结束遍历

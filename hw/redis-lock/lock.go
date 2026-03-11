@@ -82,4 +82,7 @@ func main() {
 	} else {
 		fmt.Println("Failed to acquire lock.")
 	}
+
+	//
+	fmt.Println("我的世界变得奇妙更难以言喻")
 }
