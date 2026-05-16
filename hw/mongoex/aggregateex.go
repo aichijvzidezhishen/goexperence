@@ -24,4 +24,12 @@ func InitDB() {
 		log.Fatal(err)
 	}
 	fmt.Println("Connect to MongoDB!")
+	// 连接成功后，可以在这里执行数据库操作
+
+	// 关闭连接
+	err = client.Disconnect(context.TODO())
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Connection to MongoDB closed.")
 }

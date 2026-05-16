@@ -64,6 +64,8 @@ func initClient() {
 	}
 
 	maxPoolSize, err := strconv.ParseUint(maxPoolSizeStr, 10, 64)
+	//大
+
 	if err != nil {
 		connectErr = fmt.Errorf("解析最大连接池配置失败: %v，使用默认值%v", err, defaultMaxPoolSize)
 		maxPoolSize = defaultMaxPoolSize
