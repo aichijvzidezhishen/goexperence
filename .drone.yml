@@ -1,0 +1,45 @@
+# .drone.yml 放在仓库根目录
+kind: pipeline
+type: docker
+name: Go项目CI
+
+# 触发条件：只有develop分支有提交或PR时才运行
+trigger:
+  branch:
+    - develop
+  event:
+    - push
+    - pull_request
+
+# 全局步骤配置
+steps:
+  # 步骤1：下载依赖并缓存
+  - name: 下载依赖
+    image: golang:1.22-alpine
+    volumes:
+      - name: go-mod-cache
+        path: /go/pkg/mod
+    commands:
+      - go mod download
+
+  # 步骤2：代码格式检查
+  - name: 代码格式检查
+    image: golang:1.22-alpine
+    commands:
+      - go fmt ./...
+      - go vet ./...
+
+  # 步骤3：运行单元测试
+  - name: 单元测试
+    image: golang:1.22-alpine
+    volumes:
+      - name: go-mod-cache
+        path: /go/pkg/mod
+    commands:
+      - go test -v ./... -cover
+
+# 缓存Go模块，避免每次构建都重新下载
+volumes:
+  - name: go-mod-cache
+    host:
+      path: /tmp/drone/go-mod
